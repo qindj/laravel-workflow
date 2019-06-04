@@ -1,0 +1,38 @@
+{
+    "name": "mguinea/laravel-workflow",
+    "description": "Symfony workflow component wrapper for Laravel",
+    "keywords": ["workflow", "symfony", "laravel"],
+    "license": "MIT",
+    "require": {
+        "symfony/workflow": "^4.3"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "orchestra/testbench": "^3.8",
+        "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "LaravelWorkflow\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelWorkflow\\WorkflowServiceProvider"
+            ],
+            "aliases": {
+                "Workflow": "LaravelWorkflow\\Facades\\WorkflowFacade"
+            }
+        }
+    },
+    "scripts": {
+        "test" : "vendor/bin/phpunit",
+        "docs" : "php ./phpdox.phar"
+    }
+}
