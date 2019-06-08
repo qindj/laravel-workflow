@@ -37,7 +37,7 @@ class WorkflowRegistry
      * @param  array $config
      * @throws \ReflectionException
      */
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
         $this->registry = new Registry();
         $this->config = $config;

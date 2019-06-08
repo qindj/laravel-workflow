@@ -1,12 +1,19 @@
 <?php
 
 return [
-    'post_lifecycle'   => [
-        'type' => 'state_machine',
+    'blog_publishing'   => [
+        'type' => 'workflow',
+        'audit_trail' => [
+            'enabled' => true
+        ],
         'marking_store' => [
-            'type' => 'single_state',
+            'type' => 'single_state', # or 'multiple_state'
+            'arguments' => [
+                'currentPlace'
+            ]
         ],
         'supports' => ['App\Post'],
+        'initial_place' => 'draft',
         'places' => [
             'draft',
             'review',

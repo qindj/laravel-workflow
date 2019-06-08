@@ -6,18 +6,26 @@ use Workflow;
 
 trait Workflowable
 {
-    public function workflowApply($transition, $workflow = null)
+    private $workflow;
+
+    public function workflow(string $workflowName = '')
     {
-        return Workflow::get($this, $workflow)->apply($this, $transition);
+        $this->workflow = Workflow::get($this, $workflowName);
+        return $this;
     }
 
-    public function workflowCan($transition, $workflow = null)
+    public function apply(string $transition = '')
     {
-        return Workflow::get($this, $workflow)->can($this, $transition);
+        return $this->workflow->apply($this, $transition);
     }
 
-    public function workflowTransitions()
+    public function can(string $transition = '')
     {
-        return Workflow::get($this)->getEnabledTransitions($this);
+        return $this->workflow->can($this, $transition);
+    }
+
+    public function getEnabledTransitions()
+    {
+        return $this->workflow->getEnabledTransitions($this);
     }
 }
