@@ -2,7 +2,6 @@
 
 namespace LaravelWorkflow;
 
-use LaravelWorkflow\Subscribers\WorkflowSubscriber;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Workflow\Definition;
 use Symfony\Component\Workflow\DefinitionBuilder;

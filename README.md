@@ -1,14 +1,24 @@
 # Laravel workflow
 
-Symfony workflow component wrapper for Laravel
+Symfony workflow component wrapper for Laravel. Make your Eloquent models "workflowable".
 
-### Installation
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
+  * [Using "direct" permissions](#using-direct-permissions-see-below-to-use-both-roles-and-permissions)
+  * [Using permissions via roles](#using-permissions-via-roles)
+* [Unit Testing](#unit-testing)
+* [Database](#database)
+* [Extending](#extending)
+* [Real Examples](#real-examples)
+
+## Installation
 
 ```bash
 composer require mguinea/laravel-workflow
 ```
 
-#### For laravel <= 5.4
+### For laravel <= 5.4
 
 Add a ServiceProvider to your providers array in `config/app.php`:
 
@@ -24,16 +34,15 @@ Add the `Workflow` facade to your facades array:
 
 ```php
 <?php
-    ...
-    'Workflow' => LaravelWorkflow\Facades\WorkflowFacade::class,
+    'Workflow' => LaravelWorkflow\Facades\WorkflowFacade::class
 ```
 
-### Configuration
+## Configuration
 
 Publish the config file
 
-```
-    php artisan vendor:publish --provider="LaravelWorkflow\WorkflowServiceProvider"
+```bash
+php artisan vendor:publish --provider="LaravelWorkflow\WorkflowServiceProvider"
 ```
 
 Configure your workflow in `config/workflow.php`
@@ -48,7 +57,7 @@ return [
             'type'      => 'multiple_state',
             'arguments' => ['currentPlace']
         ],
-        'supports'      => ['App\BlogPost'],
+        'supports'      => ['App\Post'],
         'places'        => ['draft', 'review', 'rejected', 'published'],
         'transitions'   => [
             'to_review' => [
@@ -68,7 +77,7 @@ return [
 ];
 ```
 
-Use the `WorkflowTrait` inside supported classes
+Use the `Workflowable` inside supported classes
 
 ```php
 <?php
@@ -76,23 +85,24 @@ Use the `WorkflowTrait` inside supported classes
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use LaravelWorkflow\Traits\WorkflowTrait;
+use LaravelWorkflow\Traits\Workflowable;
 
-class BlogPost extends Model
+class Post extends Model
 {
-  use WorkflowTrait;
+  use Workflowable;
 
 }
 ```
-### Usage
+
+## Usage
 
 ```php
 <?php
 
-use App\BlogPost;
+use App\Post;
 use Workflow;
 
-$post = BlogPost::find(1);
+$post = Post::find(1);
 $workflow = Workflow::get($post);
 // if more than one workflow is defined for the BlogPost class
 $workflow = Workflow::get($post, $workflowName);
@@ -120,14 +130,10 @@ $post->save();
 ```
 
 ### Use the events
-This package provides a list of events fired during a transition
+Symofony package provides a list of events fired in places and transitions:
 
 ```php
-    LaravelWorkflow\Events\Guard
-    LaravelWorkflow\Events\Leave
-    LaravelWorkflow\Events\Transition
-    LaravelWorkflow\Events\Enter
-    LaravelWorkflow\Events\Entered
+
 ```
 
 You can subscribe to an event
@@ -213,11 +219,3 @@ class BlogPostWorkflowSubscriber
 
 }
 ```
-
-### TODO
-- [ ] Add changelog
-- [ ] Add compatibility list
-- [ ] Add scritinizer
-- [ ] Add tests and travis ci
-- [ ] Add styleci
-- [ ] More examples

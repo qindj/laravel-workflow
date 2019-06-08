@@ -32,7 +32,6 @@
         }
     },
     "scripts": {
-        "test" : "vendor/bin/phpunit",
-        "docs" : "php ./phpdox.phar"
+        "test" : "vendor/bin/phpunit"
     }
 }

@@ -1,21 +1,30 @@
 <?php
 
 return [
-    'straight'   => [
-        'type'          => 'state_machine',
+    'post_lifecycle'   => [
+        'type' => 'state_machine',
         'marking_store' => [
             'type' => 'single_state',
         ],
-        'supports'      => ['stdClass'],
-        'places'        => ['a', 'b', 'c'],
-        'transitions'   => [
-            't1' => [
-                'from' => 'a',
-                'to'   => 'b',
+        'supports' => ['App\Post'],
+        'places' => [
+            'draft',
+            'review',
+            'rejected',
+            'published'
+        ],
+        'transitions' => [
+            'to_review' => [
+                'from' => 'draft',
+                'to' => 'review',
             ],
-            't2' => [
-                'from' => 'b',
-                'to'   => 'c',
+            'publish' => [
+                'from' => 'review',
+                'to' => 'published',
+            ],
+            'reject' => [
+                'from' => 'review',
+                'to' => 'rejected',
             ]
         ],
     ]

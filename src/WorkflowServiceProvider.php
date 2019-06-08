@@ -13,10 +13,8 @@ class WorkflowServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $configPath = $this->configPath();
-
         $this->publishes([
-            $configPath => config_path('workflow.php')
+            __DIR__ . '/../config/workflow.php' => config_path('workflow.php')
         ], 'config');
     }
 
@@ -27,23 +25,11 @@ class WorkflowServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom( $this->configPath(),'workflow');
+        $this->mergeConfigFrom( __DIR__ . '/../config/workflow.php','workflow');
 
-        $this->app->singleton(
-            'workflow', function ($app) {
+        $this->app->singleton( 'workflow', function ($app) {
                 return new WorkflowRegistry($app['config']->get('workflow'));
-            }
-        );
-    }
-
-    /**
-     * Returns config path
-     *
-     * @return string
-     */
-    protected function configPath()
-    {
-        return __DIR__ . '/../config/workflow.php';
+        });
     }
 
     /**
